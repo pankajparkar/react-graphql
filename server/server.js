@@ -5,6 +5,7 @@ const { makeExecutableSchema } = require('graphql-tools');
 const connect = require('connect');
 const query = require('connect-query');
 const http = require('http');
+const cors = require('cors');
 
 // Some fake data
 const books = [
@@ -44,6 +45,7 @@ const resolvers = {
   Mutation: {
     //mutation in local collection object
     createBook: (root, args) => {
+      debugger
       books.push(args);
       return {title: '1', author: '2'};
     }
@@ -58,13 +60,13 @@ const schema = makeExecutableSchema({
 
 // Initialize the app
 const app = connect();
-
+app.use(cors()) // comment this out to provoke CORS error
 // The GraphQL endpoint
 app.use('/graphql', bodyParser.json(), graphqlExpress({ 
   schema, 
   context: {
     myTestVariable: 'Blah!Blah!'
-  } 
+  }
 }));
 app.use('/graphql', query());
 app.use('/graphql', graphqlConnect({ schema }));
