@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-// import './TodoList.css';
-import TodoItem from './TodoItem'
+import BookItem from './BookItem'
 
-class TodoList extends Component {
+class BookList extends Component {
     constructor(props){
         props.default
         super(props);
-        this.todoList = [];
-        this.addTodo = this.addTodo.bind(this);
+        this.bookList = [];
+        this.addBook = this.addBook.bind(this);
     }
-    addTodo(){
-        this.todoList.push({
+    addBook(){
+        this.bookList.push({
             id: Number(Math.random()).toFixed(0),
             title: this.textInput.value,
             author: 'Anonymous'
@@ -18,18 +17,19 @@ class TodoList extends Component {
         this.textInput.value = '';
         this.setState({1: 1});
     }
+    
     render() {
         return (
             <div className="todo-list-container">
                 <div className="add-todo">
                     {/* <form noValidate name="addItem" onSubmit={this.onSubmit}> */}
                     <input id="add-item" ref={(input) => this.textInput = input}/>
-                    <button onClick={this.addTodo}>+</button> 
+                    <button onClick={this.addBook}>+</button> 
                     {/* </form> */}
                 </div>
                 <div>
                     <ul>
-                        {this.todoList.map((item) => <TodoItem key={item.id} item={item} />)}
+                        {this.bookList.map((item) => <BookItem key={item.id} item={item} />)}
                     </ul>
                 </div>
             </div>
@@ -37,4 +37,4 @@ class TodoList extends Component {
     }
 }
 
-export default TodoList;
+export default BookList;
