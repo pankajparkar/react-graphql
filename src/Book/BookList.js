@@ -25,7 +25,10 @@ class BookList extends Component {
 
     saveBook(book){
         //validations before insert
-        axios.post(`http://localhost:4000/graphql`, { 'query': `mutation{createBook(id: ${book.id}, title: "${book.title}", author:"Anonymous"){title}}`})
+        //create a mutation query and pass variables
+        axios.post(`http://localhost:4000/graphql`, { 
+            'query': `mutation{createBook(id: ${book.id}, title: "${book.title}", author:"Anonymous"){title}}`
+        })
         .then(res => this.getBooks());
     }
 
@@ -40,6 +43,7 @@ class BookList extends Component {
     }
 
     remove(id){
+        //create a delete query and pass variable
         axios.post(`http://localhost:4000/graphql`,{
             'query':`mutation{deleteBook(id: "${id}")}`
         })
@@ -56,7 +60,7 @@ class BookList extends Component {
                 <div>
                     <ul>
                         {this.bookList.map((item, index) =>
-                            <BookItem key={index} item={item} remove={this.remove} doubleCheck={this.doubleCheck}/>)
+                            <BookItem key={index} item={item} remove={this.remove}/>)
                         }
                     </ul>
                 </div>
