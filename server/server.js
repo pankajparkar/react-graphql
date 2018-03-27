@@ -71,7 +71,7 @@ app.use('/graphql', bodyParser.json(), graphqlExpress({
 app.use('/graphql', query());
 app.use('/graphql', graphqlConnect({ schema }));
 // GraphiQL, a visual editor for queries
-// app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 // Start the server
 app.listen(4000, () => {

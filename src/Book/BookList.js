@@ -23,21 +23,16 @@ class BookList extends Component {
     }
 
     saveBook(book){
-        //make an ajax to save books
-        //then call getBooks() method
-        axios.post(`http://localhost:4000/graphql?mutation={ createBook(title: ${book.title}, author: ${book.author}){title%20author%20}}`)
+        axios.post(`http://localhost:4000/graphql`, { 'query': `mutation{createBook(title: "${book.title}", author:"Anonymous"){title}}`})
         .then(res => {
-            //created book
             this.getBooks()
         })
     }
 
     getBooks(){
-        debugger
-        axios.get(`http://localhost:4000/graphql?query={%20books%20{title%20author%20}}`)
+        axios.post(`http://localhost:4000/graphql`,{'query':`{books{title author}}`})
         .then(res => {
             this.bookList = res.data.data.books;
-            debugger
             this.setState({ books: this.bookList });
         })
     }
@@ -46,10 +41,8 @@ class BookList extends Component {
         return (
             <div className="todo-list-container">
                 <div className="add-todo">
-                    {/* <form noValidate name="addItem" onSubmit={this.onSubmit}> */}
                     <input id="add-item" ref={(input) => this.textInput = input}/>
-                    <button onClick={this.addBook}>+</button> 
-                    {/* </form> */}
+                    <button type="button" onClick={this.addBook}>+</button> 
                 </div>
                 <div>
                     <ul>
