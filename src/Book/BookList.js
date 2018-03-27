@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import BookItem from './BookItem';
+import { getAllBooks, createBook, deleteBook } from './../queries/query.graphql';
 import axios from 'axios';
 
 class BookList extends Component {
@@ -27,14 +28,16 @@ class BookList extends Component {
         //validations before insert
         //create a mutation query and pass variables
         axios.post(`http://localhost:4000/graphql`, { 
-            'query': `mutation{createBook(id: ${book.id}, title: "${book.title}", author:"Anonymous"){title}}`
+            // 'query': `mutation{createBook(id: ${book.id}, title: "${book.title}", author:"Anonymous"){title}}`
+            'query': createBook,
+            'variables': book
         })
         .then(res => this.getBooks());
     }
 
     getBooks(){
         axios.post(`http://localhost:4000/graphql`,{
-            'query':`{books{id title author}}`
+            'query': getAllBooks
         })
         .then(res => {
             this.bookList = res.data.data.books;
@@ -45,7 +48,8 @@ class BookList extends Component {
     remove(id){
         //create a delete query and pass variable
         axios.post(`http://localhost:4000/graphql`,{
-            'query':`mutation{deleteBook(id: "${id}")}`
+            'query': deleteBook,
+            'variables': { id }
         })
         .then(res => this.getBooks());
     }

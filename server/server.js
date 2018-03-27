@@ -6,6 +6,7 @@ const connect = require('connect');
 const query = require('connect-query');
 const http = require('http');
 const cors = require('cors');
+const {typeDefs} = require('./types.graphql');
 
 // Some fake data
 let books = [
@@ -21,24 +22,12 @@ let books = [
   },
 ];
 
-// The GraphQL schema in string form
-const typeDefs = `
-  type Query { 
-    books: [Book] 
-    bookById(id: String): Book 
-  }
-  type Book { id: Int!, title: String!, author: String! }
-  #type Status { success: Boolean! }
-  type Mutation { createBook(id: Int!, title: String!, author: String!): Book, deleteBook(id: String!): Boolean }
-  `;
-
 // The resolvers
 const resolvers = {
   Query: { 
     books: () => books,
     //get from local collection
     bookById: (root, args) => {
-      console.log(root, args);
       let filteredBook = books.filter((book) => book.id == args.id) || [];
       return filteredBook.length ? filteredBook[0]: null;
     }
@@ -46,7 +35,6 @@ const resolvers = {
   Mutation: {
     //mutation in local collection object
     createBook: (root, args) => {
-      debugger 
       books.push(args);
       return books[books.length - 1];
     },
@@ -60,12 +48,13 @@ const resolvers = {
 // Put together a schema
 const schema = makeExecutableSchema({
   typeDefs,
-  resolvers,
+  resolvers
 });
 
 // Initialize the app
 const app = connect();
 app.use(cors()) // comment this out to provoke CORS error
+
 // The GraphQL endpoint
 app.use('/graphql', bodyParser.json(), graphqlExpress({ 
   schema, 
