@@ -8,7 +8,7 @@ const http = require('http');
 const cors = require('cors');
 
 // Some fake data
-const books = [
+let books = [
   {
     id: 1,
     title: "Harry Potter and the Sorcerer's stone",
@@ -27,8 +27,9 @@ const typeDefs = `
     books: [Book] 
     bookById(id: String): Book 
   }
-  type Book { title: String!, author: String! }
-  type Mutation { createBook(title: String!, author: String!): Book }
+  type Book { id: Int!, title: String!, author: String! }
+  #type Status { success: Boolean! }
+  type Mutation { createBook(id: Int!, title: String!, author: String!): Book, deleteBook(id: String!): Boolean }
   `;
 
 // The resolvers
@@ -45,9 +46,13 @@ const resolvers = {
   Mutation: {
     //mutation in local collection object
     createBook: (root, args) => {
-      debugger
+      debugger 
       books.push(args);
-      return {title: '1', author: '2'};
+      return books[books.length - 1];
+    },
+    deleteBook: (root, args) => {
+      books = books.filter(book => book.id != args.id);
+      return true;
     }
   }
 };
