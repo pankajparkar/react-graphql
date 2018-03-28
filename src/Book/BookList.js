@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+
+import axios from 'axios';
+
 import BookItem from './BookItem';
 import { getAllBooks, createBook, deleteBook } from './../queries/query.graphql';
-import axios from 'axios';
 
 class BookList extends Component {
     constructor(props){

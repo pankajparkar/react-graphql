@@ -7,6 +7,7 @@ const query = require('connect-query');
 const http = require('http');
 const cors = require('cors');
 const {typeDefs} = require('./types.graphql');
+const { transpileSchema } = require('graphql-s2s').graphqls2s;
 
 // Some fake data
 let books = [
@@ -47,7 +48,7 @@ const resolvers = {
 
 // Put together a schema
 const schema = makeExecutableSchema({
-  typeDefs,
+  typeDefs: [transpileSchema(typeDefs)],
   resolvers
 });
 
